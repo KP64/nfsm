@@ -2,7 +2,7 @@
 
 It provides [Niri](https://github.com/YaLTeR/niri) with functionality that addresses [this Niri issue](https://github.com/YaLTeR/niri/issues/426).
 
-![demo](./assets/demo.mp4)
+https://github.com/user-attachments/assets/b78c1f63-4fe9-40e5-ace4-f5fb7165194f
 
 ## Overview
 
@@ -51,4 +51,6 @@ The `nfsm-cli` is a very simple shell script that sends `FullscreenRequest` mess
 Mod+Shift+F { spawn-sh "echo 'FullscreenRequest' | socat - UNIX-CONNECT:$NFSM_SOCKET"; }
 ```
 
-However, the `nfsm-cli` does some error handling and deals with some annoyances, e.g. if it fails to connect to the socket (daemon not running?), it emits a notification and defaults to the standard Niri fullscreen behavior. Without the client, you wouldn't get any feedback on why it isn't working.
+However, the `nfsm-cli` does some error handling and deals with some annoyances, e.g. if it fails to connect to the socket (daemon not running?), it emits a notification and defaults to the standard Niri fullscreen behavior. Without the client, you wouldn't get any feedback at all when things go wrong. Here's how the notifications look on my system:
+
+![notif](./assets/notification.png)
