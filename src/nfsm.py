@@ -23,6 +23,11 @@ def main():
     except KeyboardInterrupt:
         sys.exit()
 
+def run_fullscreen_cmd(window_id):
+    subprocess.run(
+        ["niri", "msg", "action", "fullscreen-window", "--id", str(window_id)]
+    )
+
 def handle_fullscreen_request():
     # get focused window
     props = subprocess.run(
@@ -36,9 +41,7 @@ def handle_fullscreen_request():
     if window_id in fullscreen_windows:
         fullscreen_windows[window_id]["exit"] = True
         # trigger a niri window layouts changed event
-        subprocess.run(
-            ["niri", "msg", "action", "fullscreen-window", "--id", str(window_id)]
-        )
+        run_fullscreen_cmd(window_id)
         return
 
     # the window is entering fullscreen
@@ -48,14 +51,11 @@ def handle_fullscreen_request():
             "position": (col, row),
             "exit": False
         }
-        subprocess.run(
-            ["niri", "msg", "action", "fullscreen-window", "--id", str(window_id)]
-        )
+        run_fullscreen_cmd(window_id)
 
 def nfsm_socket():
     server_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    socket_path = "/run/user/1000/nfsm.sock"
-    print(os.environ['NFSM_SOCKET'])
+    socket_path = os.getenv("NFSM_SOCKET", "/run/user/1000/nfsm.sock")
 
     # remove the socket file if it already exists
     try:
@@ -95,6 +95,11 @@ def handle_window_closed(window_id):
         del window_positions[window_id]
     if window_id in fullscreen_windows:
         del fullscreen_windows[window_id]
+
+def niri_cmd(command):
+    subprocess.run(
+        ["niri", "msg", "action", command]
+    )
 
 def nfsm_stream():
     proc = subprocess.Popen(
@@ -161,16 +166,12 @@ def nfsm_stream():
                 dest_col, dest_row = fullscreen_windows[window_id]["position"]
                 # move window to the right column if necessary
                 if dest_col < col:
-                    subprocess.run(
-                        ["niri", "msg", "action", "consume-or-expel-window-left"]
-                    )
+                    niri_cmd("consume-or-expel-window-left")
                     continue
                 # the window is already in the right column, we now need to move it to the correct row
                 if dest_row != row:
                     for _ in range(row - dest_row):
-                        subprocess.run(
-                            ["niri", "msg", "action", "move-window-up"]
-                        )
+                        niri_cmd("move-window-up")
                     del fullscreen_windows[window_id]
                 # window is already back at its last recorded position
                 else:
