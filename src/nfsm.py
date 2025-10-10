@@ -70,8 +70,8 @@ def nfsm_socket():
         print(f"Failed to bind socket: {message}")
         sys.exit()
 
-    # allow a single connection only
-    server_socket.listen(1)
+    # allow five connections to have some buffer for concurrent clients, but a single connection should be enough
+    server_socket.listen(5)
     print(f"Socket server listening on: {socket_path}")
 
     while True:
