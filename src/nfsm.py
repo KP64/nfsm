@@ -97,9 +97,7 @@ def handle_window_closed(window_id):
         del fullscreen_windows[window_id]
 
 def niri_cmd(command):
-    subprocess.run(
-        ["niri", "msg", "action", command]
-    )
+    subprocess.run(["niri", "msg", "action", command])
 
 def nfsm_stream():
     proc = subprocess.Popen(

@@ -1,4 +1,4 @@
-{ python3Packages }:
+{ lib, python3Packages }:
 
 let
   pname = "nfsm";
@@ -10,4 +10,13 @@ python3Packages.buildPythonApplication {
   propagatedBuildInputs = [ ];
   dontUnpack = true;
   installPhase = "install -Dm755 ${./${pname}.py} $out/bin/${pname}";
+
+  meta = {
+    description = "Niri FullScreen Manager Daemon (nfsm)";
+    homepage = "https://github.com/gvolpe/nfsm";
+    license = lib.licenses.asl20;
+    maintainers = with lib.maintainers; [ gvolpe ];
+    mainProgram = pname;
+    platforms = lib.platforms.linux;
+  };
 }

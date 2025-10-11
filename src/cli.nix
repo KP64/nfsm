@@ -1,11 +1,23 @@
-{ libnotify, socat, writeShellApplication }:
+{ lib, libnotify, socat, writeShellApplication }:
 
-writeShellApplication {
+let
   name = "nfsm-cli";
+in
+writeShellApplication {
+  inherit name;
   runtimeInputs = [ libnotify socat ];
   text = ''
     SOCKET=''${NFSM_SOCKET:-/run/user/1000/nfsm.sock}
     trap 'notify-send --icon="${./assets/icon.png}" --app-name="NFSM" "Niri FullScreen Manager" "Failed to connect to NFSM_SOCKET: $SOCKET" && niri msg action fullscreen-window' ERR
     echo 'FullscreenRequest' | socat - UNIX-CONNECT:"$SOCKET"
   '';
+
+  meta = {
+    description = "Niri FullScreen Manager Client (nfsm-cli)";
+    homepage = "https://github.com/gvolpe/nfsm";
+    license = lib.licenses.asl20;
+    maintainers = with lib.maintainers; [ gvolpe ];
+    mainProgram = name;
+    platforms = lib.platforms.linux;
+  };
 }
