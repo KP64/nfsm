@@ -8,7 +8,7 @@ https://github.com/user-attachments/assets/b78c1f63-4fe9-40e5-ace4-f5fb7165194f
 
 It all started when I've come across the issue and reported it on the Matrix channel. Then Andrew Song shared a [Python script](https://github.com/YaLTeR/niri/issues/426#issuecomment-3367714198) that covers some of the basic scenarios, and that was the initial inspiration to try and solve the remaining cases; until I've reached a [massive blocker](https://github.com/YaLTeR/niri/discussions/2554).
 
-When that happened, I ditched a big part of the initial solution and worked on a different approach using Unix sockets to signal when we intend to enter and exit fullscreen. This makes the script much simpler and it's more reliable, but we now need a socket connection for it --- one that could go away if we get [these events](https://github.com/YaLTeR/niri/discussions/2554#discussioncomment-14635743) in the Niri event stream ☺️
+When that happened, I ditched a big part of the initial solution and worked on a different approach using Unix sockets to signal when we intend to enter and exit fullscreen. This makes the script much simpler and it's more reliable, but we now need a socket connection for it — one that could go away if we get [these events](https://github.com/YaLTeR/niri/discussions/2554#discussioncomment-14635743) in the Niri event stream ☺️
 
 ## Usage
 
@@ -50,7 +50,14 @@ It will open a Unix Socket under the `/run/user/1000/nfsm.sock` by default (nix-
 
 ## Client
 
-The `nfsm-cli` is a very simple shell script that sends `FullscreenRequest` messages to the daemon via a Unix socket. You could avoid it all together and just do this in your Niri bindings:
+The `nfsm-cli` is a very simple shell script that sends `FullscreenRequest` messages to the daemon via a Unix socket. Replace your `fullscreen-window` keybinding with the following one:
+
+```kdl
+Mod+Shift+F { spawn "nfsm-cli"; }
+```
+
+You could avoid the client all together and do this instead:
+
 
 ```kdl
 Mod+Shift+F { spawn-sh "echo 'FullscreenRequest' | socat - UNIX-CONNECT:$NFSM_SOCKET"; }
