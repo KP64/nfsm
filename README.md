@@ -1,5 +1,7 @@
 # Niri FullScreen Manager
 
+[![ci](https://github.com/gvolpe/nfsm/actions/workflows/ci.yml/badge.svg)](https://github.com/gvolpe/nfsm/actions/workflows/ci.yml)
+
 It provides [Niri](https://github.com/YaLTeR/niri) with functionality that addresses [this Niri issue](https://github.com/YaLTeR/niri/issues/426).
 
 https://github.com/user-attachments/assets/b78c1f63-4fe9-40e5-ace4-f5fb7165194f
