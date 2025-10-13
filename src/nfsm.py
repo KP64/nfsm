@@ -154,7 +154,6 @@ def nfsm_stream():
 
             try:
                 col, row = window_data["pos_in_scrolling_layout"]
-                window_size = window_data["window_size"]
             except TypeError:
                 # ignore floating windows that are made fullscreen and then go back to floating
                 continue
@@ -170,10 +169,8 @@ def nfsm_stream():
                 if dest_row != row:
                     for _ in range(row - dest_row):
                         niri_cmd("move-window-up")
-                    del fullscreen_windows[window_id]
                 # window is already back at its last recorded position
-                else:
-                    del fullscreen_windows[window_id]
+                del fullscreen_windows[window_id]
 
             window_positions[window_id] = (col, row)
 
