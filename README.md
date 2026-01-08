@@ -36,6 +36,28 @@ in
 }
 ```
 
+If you prefer homeManager.
+
+```nix
+{
+  home-manager.users."<your-username>" = {
+    imports = [
+      inputs.nfsm-flake.homeModules.default
+    ];
+     
+    # `default` means the value is the default value.
+    # This option creates a systemd service for daemon
+    services.nfsm = {
+      enable = true;
+      package = inputs.nfsm-flake.packages.${system}.nfsm; # default
+      enableCli = true; # default
+      cliPackage = inputs.nfsm-flake.packages.${system}.nfsm-cli; # default
+      socketPath = "/run/user/1000/nfsm.sock"; # default
+    };
+  }
+};
+```
+
 Only available for Linux systems; run `nix flake show` to see all outputs.
 
 If Nix is not your jam, you can grab the [daemon script](./src/nfsm.py) file directly and give it execution permissions (`chmod +x nfsm.py`). The client script can be found [here](./src/cli.nix).
